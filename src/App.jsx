@@ -351,30 +351,30 @@ export default function App() {
 
 
 
-function updatePosition(pookachu, boundaries) {
+function updatePosition() {
   // Get the current position of Pookachu
-  const { xPosition, yPosition, direction } = pookachu;
+  setPookachu((prevPookachu) => { 
+    let newXPosition = prevPookachu.xPosition;
+    let newYPosition = prevPookachu.yPosition;
+  
+    if (prevPookachu.direction === "right" && newXPosition < boundaries.xAxis.max) {
+        newXPosition += 1;
+    } else if (prevPookachu.direction === "left" && newXPosition > boundaries.xAxis.min) {
+        newXPosition -= 1;
+    } else if (prevPookachu.direction === "down" && newYPosition < boundaries.yAxis.max) {
+        newYPosition += 1;
+    } else if (prevPookachu.direction === "up" && newYPosition > boundaries.yAxis.min) {
+        newYPosition -= 1;
+    }
 
-  // Calculate the new position (e.g., move one step to the right)
-  let newXPosition = xPosition;
-  let newYPosition = yPosition;
+    return {...prevPookachu, xPosition: newXPosition, yPosition: newYPosition}  
 
-  if (direction === "right" && xPosition < boundaries.xAxis.max) {
-      newXPosition += 1;
-  } else if (direction === "left" && xPosition > boundaries.xAxis.min) {
-      newXPosition -= 1;
-  } else if (direction === "down" && yPosition < boundaries.yAxis.max) {
-      newYPosition += 1;
-  } else if (direction === "up" && yPosition > boundaries.yAxis.min) {
-      newYPosition -= 1;
-  }
 
-  // Ensure the updated position is within the boundaries
-  newXPosition = Math.max(boundaries.xAxis.min, Math.min(newXPosition, boundaries.xAxis.max));
-  newYPosition = Math.max(boundaries.yAxis.min, Math.min(newYPosition, boundaries.yAxis.max));
+});
 
-  // Set the updated position using the setPookachu function
-  setPookachu({ ...pookachu, xPosition: newXPosition, yPosition: newYPosition });
+
+
+
 }
 
 
